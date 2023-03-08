@@ -1,12 +1,15 @@
 """It cleans a dataset and exports it"""
 
 import argparse
+from pathlib import Path
 import pandas as pd
+
+DATA_DIR = Path(__file__).parent / "data"
 
 def clean_data(
     region="PT",
-    path_input='life_expectancy/data/eu_life_expectancy_raw.tsv',
-    path_output='life_expectancy/data/pt_life_expectancy.csv') -> pd.DataFrame:
+    path_input=DATA_DIR / 'eu_life_expectancy_raw.tsv',
+    path_output=DATA_DIR / 'pt_life_expectancy.csv') -> pd.DataFrame:
     """Imports data and make some transformations
 
     Args:
