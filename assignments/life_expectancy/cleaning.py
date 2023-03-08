@@ -2,11 +2,14 @@
 
 import argparse
 import pandas as pd
+from pathlib import Path
+
+DATA_DIR = Path(__file__).parent / "data"
 
 def clean_data(
     region="PT",
-    path_input='life_expectancy/data/eu_life_expectancy_raw.tsv',
-    path_output='life_expectancy/data/pt_life_expectancy.csv') -> pd.DataFrame:
+    path_input=DATA_DIR / 'eu_life_expectancy_raw.tsv',
+    path_output=DATA_DIR / 'pt_life_expectancy.csv') -> pd.DataFrame:
     """Imports data and make some transformations
 
     Args:
