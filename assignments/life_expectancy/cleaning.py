@@ -11,7 +11,8 @@ def load_data(
     """It loads the dataframe that will be cleaned and exported
 
     Args:
-        path_input (str, optional): Path to the data to be imported. Defaults to DATA_DIR/'eu_life_expectancy_raw.tsv'.
+        path_input (str, optional): Path to the data to be imported.
+                                    Defaults to DATA_DIR/'eu_life_expectancy_raw.tsv'.
 
     Returns:
         pd.DataFrame: Dataframe to be cleaned
@@ -52,10 +53,9 @@ def clean_data(
         id_vars=['unit', 'sex', 'age', 'region'],
         var_name="year"
     )
-    
+
     # Cleaning values that were supposed to be null and values with strings attached
     life_expectancy['value'].replace(': ', None, inplace=True)
-    print(life_expectancy)
     life_expectancy['value'] = life_expectancy['value'].str.split(' ', expand=True)[0]
 
     # Changing column types
@@ -77,11 +77,12 @@ def save_data(
 
     Args:
         life_expectancy (pd.DataFrame): The cleaned DataFrame to be exported
-        path_output (str): The path to export the data. Defaults to DATA_DIR / 'pt_life_expectancy.csv'
+        path_output (str): The path to export the data. 
+                           Defaults to DATA_DIR / 'pt_life_expectancy.csv'
     """
 
     life_expectancy.to_csv(
-        path_output, 
+        output_filename,
         index=False)
 
 
