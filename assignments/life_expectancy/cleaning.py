@@ -65,7 +65,7 @@ def clean_data(
     # Dropping rows that contain null values
     life_expectancy = life_expectancy.dropna()
 
-    # Filtering only observations about PT
+    # Filtering observations of a specific region
     life_expectancy = life_expectancy[life_expectancy["region"] == region]
 
     return life_expectancy
