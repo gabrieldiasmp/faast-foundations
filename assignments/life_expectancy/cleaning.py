@@ -64,11 +64,11 @@ def clean_data(
     life_expectancy['year'] = life_expectancy['year'].astype(int)
     life_expectancy['value'] = life_expectancy['value'].astype(float)
 
-    # Dropping rows that contain null values
-    life_expectancy = life_expectancy.dropna()
-
     # Filtering observations of a specific region
     life_expectancy = life_expectancy[life_expectancy["region"] == region]
+
+    # Dropping rows that contain null values
+    life_expectancy = life_expectancy.dropna()
 
     return life_expectancy.reset_index(drop=True)
 
