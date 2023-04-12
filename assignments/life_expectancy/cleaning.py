@@ -26,7 +26,7 @@ def load_data(
 
 
 def clean_data(
-        life_expectancy: pd.DataFrame,
+        life_expectancy_data: pd.DataFrame,
         region: str = "PT") -> pd.DataFrame:
     """It cleans the data
 
@@ -39,6 +39,8 @@ def clean_data(
     """
 
     print(f"----------- selected region: {region} -----------")
+
+    life_expectancy = life_expectancy_data.copy()
 
     # Splitting a conjugated column in multiple column
     life_expectancy[['unit', 'sex', 'age', 'region']] = \
@@ -68,7 +70,7 @@ def clean_data(
     # Filtering observations of a specific region
     life_expectancy = life_expectancy[life_expectancy["region"] == region]
 
-    return life_expectancy
+    return life_expectancy.reset_index(drop=True)
 
 def save_data(
         life_expectancy: pd.DataFrame,
@@ -100,6 +102,7 @@ def main(
     cleaned_life_expectancy = clean_data(life_expectancy, region)
     save_data(cleaned_life_expectancy, output_filename)
 
+    return cleaned_life_expectancy
 
 if __name__ == "__main__":  # pragma: no cover
 
