@@ -41,6 +41,28 @@ def life_expectancy_expected() -> pd.DataFrame:
 
     return df_expected
 
+@pytest.fixture(scope="session")
+def raw_data() -> pd.DataFrame:
+    """Fixture to load the expected output of the cleaning script"""
+
+    raw_data = pd.read_csv(
+        FIXTURES_DIR / "raw_data.tsv",
+        sep='\t'
+    )
+
+    return raw_data
+
+
+@pytest.fixture(scope="session")
+def pt_life_expectancy_expected() -> pd.DataFrame:
+    """Fixture to load the expected output of the cleaning script"""
+
+    pt_life_expectancy_actual = pd.read_csv(
+        FIXTURES_DIR / "pt_life_expectancy_expected.csv"
+    )
+
+    return pt_life_expectancy_actual
+
 
 @pytest.fixture(autouse=True)
 def run_before_and_after_tests() -> None:
