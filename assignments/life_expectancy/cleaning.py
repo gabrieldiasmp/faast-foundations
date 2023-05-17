@@ -91,7 +91,7 @@ def save_data(
 def main(
         region: str,
         input_filename: str = DATA_DIR / 'eu_life_expectancy_raw.tsv',
-        output_filename: str = DATA_DIR / 'pt_life_expectancy.csv'):
+        output_filename: str = DATA_DIR / 'pt_life_expectancy.csv') -> pd.DataFrame:
     """It runs the following steps:
         1) Load the data
         2) Clean the data
