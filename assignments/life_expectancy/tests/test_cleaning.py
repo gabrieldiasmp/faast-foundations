@@ -1,16 +1,18 @@
 """Tests for the cleaning module"""
 import pandas as pd
 
-from life_expectancy.cleaning import main
+from life_expectancy.cleaning import clean_data
 from . import OUTPUT_DIR
 
+def test_clean_data(
+        raw_data: pd.DataFrame,
+        life_expectancy_expected: pd.DataFrame):
+    """It tests the clean function"""
 
-def test_clean_data(pt_life_expectancy_expected):
-    """Run the `main` function and compare the output to the expected output"""
-    main(region="PT")
-    pt_life_expectancy_actual = pd.read_csv(
-        OUTPUT_DIR / "pt_life_expectancy.csv"
-    )
+    df_clean = clean_data(
+        life_expectancy_data=raw_data,
+        region="AT")
+
     pd.testing.assert_frame_equal(
-        pt_life_expectancy_actual, pt_life_expectancy_expected
+        df_clean, life_expectancy_expected
     )

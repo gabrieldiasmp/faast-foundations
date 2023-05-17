@@ -26,7 +26,7 @@ def load_data(
 
 
 def clean_data(
-        life_expectancy: pd.DataFrame,
+        life_expectancy_data: pd.DataFrame,
         region: str = "PT") -> pd.DataFrame:
     """It cleans the data
 
@@ -39,6 +39,8 @@ def clean_data(
     """
 
     print(f"----------- selected region: {region} -----------")
+
+    life_expectancy = life_expectancy_data.copy()
 
     # Splitting a conjugated column in multiple column
     life_expectancy[['unit', 'sex', 'age', 'region']] = \
@@ -62,13 +64,13 @@ def clean_data(
     life_expectancy['year'] = life_expectancy['year'].astype(int)
     life_expectancy['value'] = life_expectancy['value'].astype(float)
 
-    # Dropping rows that contain null values
-    life_expectancy = life_expectancy.dropna()
-
     # Filtering observations of a specific region
     life_expectancy = life_expectancy[life_expectancy["region"] == region]
 
-    return life_expectancy
+    # Dropping rows that contain null values
+    life_expectancy = life_expectancy.dropna()
+
+    return life_expectancy.reset_index(drop=True)
 
 def save_data(
         life_expectancy: pd.DataFrame,
@@ -89,7 +91,7 @@ def save_data(
 def main(
         region: str,
         input_filename: str = DATA_DIR / 'eu_life_expectancy_raw.tsv',
-        output_filename: str = DATA_DIR / 'pt_life_expectancy.csv'):
+        output_filename: str = DATA_DIR / 'pt_life_expectancy.csv') -> pd.DataFrame:
     """It runs the following steps:
         1) Load the data
         2) Clean the data
@@ -100,6 +102,7 @@ def main(
     cleaned_life_expectancy = clean_data(life_expectancy, region)
     save_data(cleaned_life_expectancy, output_filename)
 
+    return cleaned_life_expectancy
 
 if __name__ == "__main__":  # pragma: no cover
 
