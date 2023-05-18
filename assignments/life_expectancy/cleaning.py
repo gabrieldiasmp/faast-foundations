@@ -1,10 +1,11 @@
 """It cleans a dataset and exports it"""
 
 import argparse
+from distutils.command.clean import clean
 from pathlib import Path
 import pandas as pd
 from life_expectancy.load_data import LoadTSV, LoadJSON
-from life_expectancy.clean_data import clean_data
+from life_expectancy.clean_data import CleanTSV
 from life_expectancy.save_data import save_data
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -13,12 +14,14 @@ class Pipeline:
     def __init__(
             self, 
             region: str, 
-            load_type, 
+            load_type,
+            clean_type, 
             input_filename: str = DATA_DIR / 'eu_life_expectancy_raw.tsv', 
             output_filename: str = DATA_DIR / 'pt_life_expectancy.csv') -> None:
 
         self.region = region
         self.load_type = load_type
+        self.clean_type = clean_type
         self.input_filename = input_filename
         self.output_filename = output_filename
     
@@ -30,7 +33,11 @@ class Pipeline:
         """
 
         life_expectancy = self.load_type.load_file(self.input_filename)
-        cleaned_life_expectancy = clean_data(life_expectancy, self.region)
+        
+        cleaned_life_expectancy = self.clean_type.clean_data(
+            life_expectancy_data=life_expectancy, 
+            region=self.region)
+
         print(cleaned_life_expectancy.head())
         save_data(cleaned_life_expectancy, self.output_filename)
 
@@ -43,12 +50,12 @@ if __name__ == "__main__":  # pragma: no cover
 
     args = parser.parse_args()
 
-    # Pipeline(
-    #     region=args.region,
-    #     load_type=LoadTSV()
-    # ).run()
+    Pipeline(
+        region=args.region,
+        load_type=LoadTSV(),
+        clean_type=CleanTSV()
+    ).run()
 
-    print(DATA_DIR / 'eurostat_life_expect.json')
     # Pipeline(
     #     region=args.region,
     #     input_filename=DATA_DIR / 'eurostat_life_expect.json',
