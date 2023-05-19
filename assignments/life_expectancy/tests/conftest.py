@@ -1,6 +1,9 @@
 """Pytest configuration file"""
 import pandas as pd
+import json
 import pytest
+from typing import List, Dict
+from life_expectancy.load_data import LoadJSON
 
 from . import FIXTURES_DIR, OUTPUT_DIR
 
@@ -62,3 +65,24 @@ def pt_life_expectancy_expected() -> pd.DataFrame:
     )
 
     return pt_life_expectancy_actual
+
+@pytest.fixture(scope="session")
+def raw_json_data() -> List[Dict]:
+    """Fixture to load the raw json for test"""
+
+    path=FIXTURES_DIR / "sample_dict.json"
+
+    with open(path, 'r') as json_file:
+        raw_json = json.load(json_file)
+
+    return raw_json
+
+@pytest.fixture(scope="session")
+def expected_json_data() -> pd.DataFrame:
+    """Fixture to load the expected pandas dataframe after test"""
+
+    raw_json = pd.read_csv(
+        FIXTURES_DIR / "sample_dict_expected.csv"
+    )
+
+    return raw_json

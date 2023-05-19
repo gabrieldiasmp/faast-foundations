@@ -1,11 +1,10 @@
 """It cleans a dataset and exports it"""
 
 import argparse
-from distutils.command.clean import clean
 from pathlib import Path
 import pandas as pd
 from life_expectancy.load_data import LoadTSV, LoadJSON
-from life_expectancy.clean_data import CleanTSV
+from life_expectancy.clean_data import CleanTSV, CleanJSON
 from life_expectancy.save_data import save_data
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -34,9 +33,9 @@ class Pipeline:
 
         life_expectancy = self.load_type.load_file(self.input_filename)
         
-        cleaned_life_expectancy = self.clean_type.clean_data(
-            life_expectancy_data=life_expectancy, 
-            region=self.region)
+        cleaned_life_expectancy = self.clean_type.clean_data( 
+            region=self.region,
+            life_expectancy_data=life_expectancy)
 
         print(cleaned_life_expectancy.head())
         save_data(cleaned_life_expectancy, self.output_filename)
@@ -52,6 +51,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     Pipeline(
         region=args.region,
+        input_filename=DATA_DIR / 'eu_life_expectancy_raw.tsv',
         load_type=LoadTSV(),
         clean_type=CleanTSV()
     ).run()
@@ -59,6 +59,7 @@ if __name__ == "__main__":  # pragma: no cover
     # Pipeline(
     #     region=args.region,
     #     input_filename=DATA_DIR / 'eurostat_life_expect.json',
-    #     load_type=LoadJSON()
+    #     load_type=LoadJSON(),
+    #     clean_type=CleanJSON()
     # ).run()
 

@@ -1,5 +1,6 @@
 import pandas as pd
 from abc import ABC, abstractmethod
+from typing import List, Dict
 
 class CleanData(ABC):
     """An interface to load data from different formats
@@ -62,7 +63,8 @@ class CleanTSV(CleanData):
 
 class CleanJSON(CleanData):
     def clean_data(
-            life_expectancy_data: pd.DataFrame,
+            self,
+            life_expectancy_data: List[Dict],
             region: str = "PT") -> pd.DataFrame:
         """It cleans the data
 
@@ -76,25 +78,11 @@ class CleanJSON(CleanData):
 
         print(f"----------- selected region: {region} -----------")
 
-        life_expectancy = life_expectancy_data.copy()
-
-        # Splitting a conjugated column in multiple column
-        life_expectancy[['unit', 'sex', 'age', 'region']] = \
-            life_expectancy['unit,sex,age,geo\\time'].str.split(',', expand=True)
-
-        # Dropping the conjugated column
-        life_expectancy.drop('unit,sex,age,geo\\time', axis=1, inplace=True)
-
-        # From wide to long
-        life_expectancy = pd.melt(
-            life_expectancy,
-            id_vars=['unit', 'sex', 'age', 'region'],
-            var_name="year"
-        )
+        life_expectancy = pd.DataFrame(life_expectancy_data)
+        life_expectancy.rename(columns={"life_expectancy": "value", "country": "region"}, inplace=True)
 
         # Cleaning values that were supposed to be null and values with strings attached
         life_expectancy['value'].replace(': ', None, inplace=True)
-        life_expectancy['value'] = life_expectancy['value'].str.split(' ', expand=True)[0]
 
         # Changing column types
         life_expectancy['year'] = life_expectancy['year'].astype(int)
@@ -106,4 +94,4 @@ class CleanJSON(CleanData):
         # Dropping rows that contain null values
         life_expectancy = life_expectancy.dropna()
 
-        return life_expectancy.reset_index(drop=True)
+        return life_expectancy[["unit","sex","age","region","year","value"]].reset_index(drop=True)

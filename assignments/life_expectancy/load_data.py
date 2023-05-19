@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import pandas as pd
 import json
+from typing import List, Dict
 
 
 class LoadData(ABC):
@@ -8,11 +9,11 @@ class LoadData(ABC):
     """
 
     @abstractmethod
-    def load_file(self, path):
+    def load_file(self, path) -> pd.DataFrame:
         pass
 
 class LoadTSV(LoadData):
-    def load_file(self, path):
+    def load_file(self, path) -> pd.DataFrame:
         """It loads the .tsv that will be cleaned and exported
 
         Args:
@@ -30,7 +31,7 @@ class LoadTSV(LoadData):
 
 
 class LoadJSON(LoadData):
-    def load_file(self, path):
+    def load_file(self, path) -> List[Dict]:
         """It loads the .json that will be cleaned and exported
 
         Args:

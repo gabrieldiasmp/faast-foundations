@@ -3,7 +3,7 @@ import pandas as pd
 import unittest.mock as mock
 
 from life_expectancy.save_data import save_data
-from . import FIXTURES_DIR, OUTPUT_DIR
+from . import OUTPUT_DIR
 
 def test_save_data(pt_life_expectancy_expected):
     """It tests the method that saves the cleaned data to the directory
