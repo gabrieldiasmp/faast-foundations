@@ -23,6 +23,8 @@ class LoadTSV(LoadData):
             pd.DataFrame: Dataframe to be cleaned
         """
 
+        print("========== Running TSV pipeline ==========")
+
         life_expectancy = pd.read_csv(
             path,
             sep='\t')
@@ -40,6 +42,8 @@ class LoadJSON(LoadData):
         Returns:
             pd.DataFrame: Dataframe to be cleaned
         """
+
+        print("========== Running JSON pipeline ==========")
 
         with open(path, 'r') as json_file:
             life_expectancy = json.load(json_file)
