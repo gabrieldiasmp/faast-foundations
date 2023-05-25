@@ -64,7 +64,7 @@ class CleanTSV(CleanData):
 class CleanJSON(CleanData):
     def clean_data(
             self,
-            life_expectancy_data: List[Dict],
+            life_expectancy_data: pd.DataFrame,
             region: str = "PT") -> pd.DataFrame:
         """It cleans the data
 
@@ -78,7 +78,8 @@ class CleanJSON(CleanData):
 
         print(f"----------- selected region: {region} -----------")
 
-        life_expectancy = pd.DataFrame(life_expectancy_data)
+        life_expectancy = life_expectancy_data.copy()
+
         life_expectancy.rename(columns={"life_expectancy": "value", "country": "region"}, inplace=True)
 
         # Cleaning values that were supposed to be null and values with strings attached

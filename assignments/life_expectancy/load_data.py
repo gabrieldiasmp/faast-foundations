@@ -33,7 +33,7 @@ class LoadTSV(LoadData):
 
 
 class LoadJSON(LoadData):
-    def load_file(self, path) -> List[Dict]:
+    def load_file(self, path) -> pd.DataFrame:
         """It loads the .json that will be cleaned and exported
 
         Args:
@@ -48,4 +48,4 @@ class LoadJSON(LoadData):
         with open(path, 'r') as json_file:
             life_expectancy = json.load(json_file)
 
-        return life_expectancy
+        return pd.DataFrame(life_expectancy)

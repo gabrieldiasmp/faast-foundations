@@ -5,7 +5,7 @@ from pathlib import Path
 from life_expectancy.load_data import LoadTSV, LoadJSON
 from life_expectancy.clean_data import CleanTSV, CleanJSON
 from life_expectancy.save_data import save_data
-from life_expectancy.countries import Countries
+from life_expectancy.region import Region
 
 DATA_DIR = Path(__file__).parent / "data"
 
@@ -33,12 +33,10 @@ class Pipeline: # pylint: disable=R0903
             3) Export the data
         """
 
-        countries = Countries().generate_countries_enum()
-
         life_expectancy = self.load_type.load_file(self.input_filename)
 
         cleaned_life_expectancy = self.clean_type.clean_data(
-            region=countries[self.region].value,
+            region=self.region,
             life_expectancy_data=life_expectancy)
 
         print(cleaned_life_expectancy.head())
@@ -54,14 +52,14 @@ if __name__ == "__main__":  # pragma: no cover
     args = parser.parse_args()
 
     Pipeline(
-        region=args.region,
+        region=Region(args.region).value,
         input_filename=DATA_DIR / 'eu_life_expectancy_raw.tsv',
         load_type=LoadTSV(),
         clean_type=CleanTSV()
     ).run()
 
     Pipeline(
-        region=args.region,
+        region=Region(args.region).value,
         input_filename=DATA_DIR / 'eurostat_life_expect.json',
         load_type=LoadJSON(),
         clean_type=CleanJSON()
