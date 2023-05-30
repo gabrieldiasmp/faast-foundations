@@ -1,0 +1,5 @@
+unit,sex,age,region,year,value
+YR,F,Y65,AT,2021,21.2
+YR,F,Y_LT1,AT,2021,83.8
+YR,M,Y65,AT,2021,18.0
+YR,M,Y_LT1,AT,2021,78.8
